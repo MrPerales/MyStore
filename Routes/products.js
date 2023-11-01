@@ -59,4 +59,36 @@ router.post('/', (req, resp) => {
   });
 });
 
+// patch para modificar algunos campos
+
+router.patch('/:id', (req, resp) => {
+  const { id } = req.params;
+  const body = req.body;
+  resp.json({
+    message: 'partial Update',
+    data: body,
+    id,
+  });
+});
+// put todos los campos se modifican
+
+router.put('/:id', (req, resp) => {
+  const { id } = req.params;
+  const body = resp.body;
+  resp.json({
+    message: 'Update product',
+    data: body,
+    id,
+  });
+});
+
+// delete
+router.delete('/:id', (req, resp) => {
+  const { id } = req.params;
+  resp.json({
+    message: 'deleted Product',
+    id,
+  });
+});
+
 module.exports = router;
