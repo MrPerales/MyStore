@@ -4,7 +4,7 @@ const { faker } = require('@faker-js/faker');
 // faker-JS
 const router = express.Router();
 
-// endpoints
+// endpoints GET
 router.get('/filter', (req, resp) => {
   resp.send('yo soy un filter');
 });
@@ -47,6 +47,16 @@ router.get('/:categoryId', (req, resp) => {
       categoryId,
     },
   ]);
+});
+
+// POST
+
+router.post('/', (req, resp) => {
+  const body = req.body;
+  resp.json({
+    message: 'created',
+    data: body,
+  });
 });
 
 module.exports = router;

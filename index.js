@@ -3,6 +3,9 @@ const routerApi = require('./Routes/index');
 const app = express();
 const port = 3000;
 
+// middleware para aceptar el post
+app.use(express.json());
+
 routerApi(app);
 
 // server port
