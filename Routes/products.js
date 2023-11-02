@@ -6,17 +6,17 @@ const service = new ProductsService();
 
 // endpoints GET
 // // products with faker-JS
-router.get('/', (req, resp) => {
-  const products = service.find();
+router.get('/', async (req, resp) => {
+  const products = await service.find();
   resp.status(200).json(products);
 });
 
 router.get('/filter', (req, resp) => {
   resp.send('yo soy un filter');
 });
-router.get('/:id', (req, resp) => {
+router.get('/:id', async (req, resp) => {
   const { id } = req.params;
-  const product = service.findOne(id);
+  const product = await service.findOne(id);
   resp.json(product);
 });
 
@@ -40,25 +40,25 @@ router.get('/:categoryId', (req, resp) => {
 
 // POST
 
-router.post('/', (req, resp) => {
+router.post('/', async (req, resp) => {
   const body = req.body;
-  const product = service.create(body);
+  const product = await service.create(body);
   resp.status(201).json(product);
 });
 
 // patch para modificar algunos campos
 
-router.patch('/:id', (req, resp) => {
+router.patch('/:id', async (req, resp) => {
   const { id } = req.params;
   const body = req.body;
-  const product = service.update(id, body);
+  const product = await service.update(id, body);
   resp.json(product);
 });
 
 // delete
-router.delete('/:id', (req, resp) => {
+router.delete('/:id', async (req, resp) => {
   const { id } = req.params;
-  const rta = service.delete(id);
+  const rta = await service.delete(id);
   resp.json(rta);
 });
 

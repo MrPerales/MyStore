@@ -6,7 +6,7 @@ class UsersService {
     this.generate();
   }
 
-  generate() {
+  async generate() {
     const limit = 5;
     for (let i = 0; i < limit; i++) {
       this.users.push({
@@ -14,10 +14,11 @@ class UsersService {
         name: faker.name.firstName(),
         lastName: faker.name.lastName(),
         image: faker.image.avatar(),
+        id: faker.string.uuid(),
       });
     }
   }
-  create(data) {
+  async create(data) {
     const userId = faker.string.uuid();
     const newUser = {
       userId,
@@ -26,36 +27,52 @@ class UsersService {
     this.users.push(newUser);
     return newUser;
   }
-  find() {
-    return this.users;
+  async find() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.users);
+      }, 3000);
+    });
   }
-  findOne(nickname) {
-    return this.users.find((item) => item.nickname === nickname);
+  async findOne(nickname) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.users.find((item) => item.nickname === nickname));
+      }, 3000);
+    });
   }
-  update(nickname, changes) {
-    const indexUser = this.users.findIndex(
-      (item) => item.nickname === nickname,
-    );
-    if (indexUser === -1) {
-      throw new Error('Error user not Found');
-    }
-    const user = this.users[indexUser];
-    this.users[indexUser] = {
-      ...user,
-      changes,
-    };
-    return this.users[indexUser];
+  async update(nickname, changes) {
+    return new Promise((resolve, reject) => {
+      const indexUser = this.users.findIndex(
+        (item) => item.nickname === nickname,
+      );
+      if (indexUser === -1) {
+        throw new Error('Error user not Found');
+      }
+      const user = this.users[indexUser];
+      this.users[indexUser] = {
+        ...user,
+        ...changes,
+      };
+      setTimeout(() => {
+        resolve(this.users[indexUser]);
+      }, 3000);
+    });
   }
-  delete(nickname) {
-    const indexUser = this.users.findIndex(
-      (item) => item.nickname === nickname,
-    );
-    if (indexUser === -1) {
-      throw new Error('Error user not found');
-    }
+  async delete(nickname) {
+    return new Promise((resolve, reject) => {
+      const indexUser = this.users.findIndex(
+        (item) => item.nickname === nickname,
+      );
+      if (indexUser === -1) {
+        throw new Error('Error user not found');
+      }
 
-    this.users.splice(indexUser, 1);
-    return { nickname };
+      this.users.splice(indexUser, 1);
+      setTimeout(() => {
+        resolve({ nickname });
+      }, 3000);
+    });
   }
 }
 

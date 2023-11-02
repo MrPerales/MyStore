@@ -6,7 +6,7 @@ class ProductsService {
     this.generate();
   }
 
-  generate() {
+  async generate() {
     const limit = 10;
     for (let i = 0; i < limit; i++) {
       this.products.push({
@@ -17,7 +17,7 @@ class ProductsService {
       });
     }
   }
-  create(data) {
+  async create(data) {
     const newProduct = {
       id: faker.string.uuid(),
       ...data,
@@ -25,14 +25,14 @@ class ProductsService {
     this.products.push(newProduct);
     return newProduct;
   }
-  find() {
+  async find() {
     return this.products;
   }
-  findOne(id) {
+  async findOne(id) {
     return this.products.find((item) => item.id === id);
   }
 
-  update(id, changes) {
+  async update(id, changes) {
     // find product
     const indexProduct = this.products.findIndex((item) => item.id === id);
     if (indexProduct === -1) {
@@ -46,7 +46,7 @@ class ProductsService {
     };
     return this.products[indexProduct];
   }
-  delete(id) {
+  async delete(id) {
     // find product
     const indexProduct = this.products.findIndex((item) => item.id === id);
     if (indexProduct === -1) {
