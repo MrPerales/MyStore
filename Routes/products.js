@@ -42,10 +42,8 @@ router.get('/:categoryId', (req, resp) => {
 
 router.post('/', (req, resp) => {
   const body = req.body;
-  resp.status(201).json({
-    message: 'created',
-    data: body,
-  });
+  const product = service.create(body);
+  resp.status(201).json(product);
 });
 
 // patch para modificar algunos campos
@@ -53,31 +51,15 @@ router.post('/', (req, resp) => {
 router.patch('/:id', (req, resp) => {
   const { id } = req.params;
   const body = req.body;
-  resp.json({
-    message: 'partial Update',
-    data: body,
-    id,
-  });
-});
-// put todos los campos se modifican
-
-router.put('/:id', (req, resp) => {
-  const { id } = req.params;
-  const body = resp.body;
-  resp.json({
-    message: 'Update product',
-    data: body,
-    id,
-  });
+  const product = service.update(id, body);
+  resp.json(product);
 });
 
 // delete
 router.delete('/:id', (req, resp) => {
   const { id } = req.params;
-  resp.json({
-    message: 'deleted Product',
-    id,
-  });
+  const rta = service.delete(id);
+  resp.json(rta);
 });
 
 module.exports = router;

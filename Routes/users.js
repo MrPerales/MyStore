@@ -24,4 +24,24 @@ router.get('/:nickname', (req, resp) => {
   const users = service.findOne(nickname);
   resp.json(users);
 });
+
+// post
+router.post('/', (req, resp) => {
+  const body = req.body;
+  const newUser = service.create(body);
+  resp.status(201).json(newUser);
+});
+// patch
+router.patch('/:id', (req, resp) => {
+  const body = req.body;
+  const { id } = req.params;
+  const user = service.update(id, body);
+  resp.json(user);
+});
+// delete
+router.delete('/:id', (req, resp) => {
+  const { id } = req.params;
+  const rta = service.delete(id);
+  resp.json(rta);
+});
 module.exports = router;

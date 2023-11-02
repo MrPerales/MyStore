@@ -1,4 +1,4 @@
-const { faker } = require('@faker-js/faker');
+const { faker, Faker } = require('@faker-js/faker');
 
 class ProductsService {
   constructor() {
@@ -17,6 +17,14 @@ class ProductsService {
       });
     }
   }
+  create(data) {
+    const newProduct = {
+      id: faker.string.uuid(),
+      ...data,
+    };
+    this.products.push(newProduct);
+    return newProduct;
+  }
   find() {
     return this.products;
   }
@@ -24,8 +32,30 @@ class ProductsService {
     return this.products.find((item) => item.id === id);
   }
 
-  update() {}
-  delete() {}
+  update(id, changes) {
+    // find product
+    const indexProduct = this.products.findIndex((item) => item.id === id);
+    if (indexProduct === -1) {
+      throw new Error('product not found :(');
+    }
+    const product = this.products[indexProduct];
+    // update product
+    this.products[indexProduct] = {
+      ...product,
+      ...changes,
+    };
+    return this.products[indexProduct];
+  }
+  delete(id) {
+    // find product
+    const indexProduct = this.products.findIndex((item) => item.id === id);
+    if (indexProduct === -1) {
+      throw new Error('product not found :(');
+    }
+    // delete product
+    this.products.splice(indexProduct, 1);
+    return { id };
+  }
 }
 
 module.exports = ProductsService;
