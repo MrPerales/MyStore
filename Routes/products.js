@@ -10,11 +10,17 @@ router.get('/filter', (req, resp) => {
 });
 router.get('/:id', (req, resp) => {
   const { id } = req.params;
-  resp.json({
-    id,
-    name: 'product 1',
-    price: 10,
-  });
+  if (id === '999') {
+    resp.status(404).json({
+      message: 'Not found',
+    });
+  } else {
+    resp.json({
+      id,
+      name: 'product 1',
+      price: 10,
+    });
+  }
 });
 // // products with faker-JS
 router.get('/', (req, resp) => {
@@ -29,7 +35,7 @@ router.get('/', (req, resp) => {
       image: faker.image.url(),
     });
   }
-  resp.json(products);
+  resp.status(200).json(products);
 });
 router.get('/:categoryId', (req, resp) => {
   const { categoryId } = req.params;
@@ -53,7 +59,7 @@ router.get('/:categoryId', (req, resp) => {
 
 router.post('/', (req, resp) => {
   const body = req.body;
-  resp.json({
+  resp.status(201).json({
     message: 'created',
     data: body,
   });

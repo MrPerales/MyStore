@@ -26,7 +26,7 @@ router.get('/', (req, resp) => {
     });
   }
 
-  resp.json(users);
+  resp.status(200).json(users);
 });
 
 module.exports = router;
