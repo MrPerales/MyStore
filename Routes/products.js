@@ -14,10 +14,14 @@ router.get('/', async (req, resp) => {
 router.get('/filter', (req, resp) => {
   resp.send('yo soy un filter');
 });
-router.get('/:id', async (req, resp) => {
-  const { id } = req.params;
-  const product = await service.findOne(id);
-  resp.json(product);
+router.get('/:id', async (req, resp, next) => {
+  try {
+    const { id } = req.params;
+    const product = await service.findOne(id);
+    resp.json(product);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get('/:categoryId', (req, resp) => {
