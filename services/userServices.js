@@ -1,4 +1,5 @@
 const { faker } = require('@faker-js/faker');
+const boom = require('@hapi/boom');
 
 class UsersService {
   constructor() {
@@ -15,6 +16,7 @@ class UsersService {
         lastName: faker.name.lastName(),
         image: faker.image.avatar(),
         id: faker.string.uuid(),
+        isBlock: faker.datatype.boolean(),
       });
     }
   }
@@ -37,7 +39,14 @@ class UsersService {
   async findOne(nickname) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve(this.users.find((item) => item.nickname === nickname));
+        const user = this.users.find((item) => item.nickname === nickname);
+        if (!user) {
+          reject(boom.notFound('user not found'));
+        } else if (user.isBlock) {
+          reject(boom.conflict('user is block'));
+        } else {
+          resolve(user);
+        }
       }, 3000);
     });
   }
@@ -47,9 +56,10 @@ class UsersService {
         (item) => item.nickname === nickname,
       );
       if (indexUser === -1) {
-        throw new Error('Error user not Found');
+        reject(boom.notFound('user not found '));
       }
       const user = this.users[indexUser];
+      // update product
       this.users[indexUser] = {
         ...user,
         ...changes,
@@ -65,7 +75,7 @@ class UsersService {
         (item) => item.nickname === nickname,
       );
       if (indexUser === -1) {
-        throw new Error('Error user not found');
+        reject(boom.notFound('user not found '));
       }
 
       this.users.splice(indexUser, 1);

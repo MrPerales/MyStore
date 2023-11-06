@@ -13,6 +13,14 @@ function errorHandler(err, req, resp, next) {
     stack: err.stack,
   });
 }
+function boomErrorHandler(err, req, resp, next) {
+  if (err.isBoom) {
+    const { output } = err;
+    resp.status(output.statusCode).json(output.payload);
+  } else {
+    next(err);
+  }
+}
 //así no se utilice next en el código se debe poner aqui,
 //ya que un middleware de error tiene los cuatro parámetros
-module.exports = { logErrors, errorHandler };
+module.exports = { logErrors, errorHandler, boomErrorHandler };

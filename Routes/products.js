@@ -52,18 +52,26 @@ router.post('/', async (req, resp) => {
 
 // patch para modificar algunos campos
 
-router.patch('/:id', async (req, resp) => {
-  const { id } = req.params;
-  const body = req.body;
-  const product = await service.update(id, body);
-  resp.json(product);
+router.patch('/:id', async (req, resp, next) => {
+  try {
+    const { id } = req.params;
+    const body = req.body;
+    const product = await service.update(id, body);
+    resp.json(product);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // delete
-router.delete('/:id', async (req, resp) => {
-  const { id } = req.params;
-  const rta = await service.delete(id);
-  resp.json(rta);
+router.delete('/:id', async (req, resp, next) => {
+  try {
+    const { id } = req.params;
+    const rta = await service.delete(id);
+    resp.json(rta);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;
