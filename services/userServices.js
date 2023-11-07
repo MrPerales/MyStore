@@ -12,8 +12,8 @@ class UsersService {
     for (let i = 0; i < limit; i++) {
       this.users.push({
         nickname: faker.person.firstName(),
-        name: faker.name.firstName(),
-        lastName: faker.name.lastName(),
+        name: faker.person.firstName(),
+        lastName: faker.person.lastName(),
         image: faker.image.avatar(),
         id: faker.string.uuid(),
         isBlock: faker.datatype.boolean(),
