@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const routerApi = require('./Routes/index');
 const {
   logErrors,
@@ -10,6 +11,19 @@ const port = 3000;
 
 // middleware para aceptar el post
 app.use(express.json());
+
+const whiteList = ['http://localhost:5500', 'https://example.'];
+const options = {
+  origin: (origin, callback) => {
+    if (whiteList.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('no permitido'));
+    }
+  },
+};
+// app.use(cors()); //habilitar a cualquiera origen de la peticion
+app.use(cors(options));
 
 routerApi(app);
 
