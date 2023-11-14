@@ -1,10 +1,13 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
+const pool = require('../libs/postgres.pool');
 
 class ProductsService {
   constructor() {
     this.products = [];
     this.generate();
+    this.pool = pool;
+    this.pool.on('error', (error) => console.log(error));
   }
 
   async generate() {
@@ -28,7 +31,9 @@ class ProductsService {
     return newProduct;
   }
   async find() {
-    return this.products;
+    const query = 'SELECT * FROM tasks';
+    const response = await this.pool.query(query);
+    return response.rows;
   }
   async findOne(id) {
     //const name = this.getTotal(); //error creado
@@ -57,13 +62,16 @@ class ProductsService {
   }
   async delete(id) {
     // find product
-    const indexProduct = this.products.findIndex((item) => item.id === id);
-    if (indexProduct === -1) {
-      throw boom.notFound('product not Found');
-    }
+    // const indexProduct = this.products.findIndex((item) => item.id === id);
+    // if (indexProduct === -1) {
+    //   throw boom.notFound('product not Found');
+    // }
     // delete product
-    this.products.splice(indexProduct, 1);
+    const query = `DELETE FROM tasks WHERE id = ${id}`;
+    await this.pool.query(query);
     return { id };
+    // this.products.splice(indexProduct, 1);
+    // return { id };
   }
 }
 
