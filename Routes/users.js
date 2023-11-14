@@ -22,7 +22,8 @@ const router = express.Router();
 // });
 
 router.get('/', async (req, resp) => {
-  const users = await service.find();
+  // const users = await service.find(); // with random
+  const users = await service.findWithDB(); // with db
   resp.status(200).json(users);
 });
 
