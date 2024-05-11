@@ -1,5 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const CategoryService = require('../services/categoryService');
+const validatorHandler = require('../middlewares/validatorHandler');
+
+const service = new CategoryService();
 
 router.get('/', (req, resp) => {
   resp.json([
@@ -20,7 +24,6 @@ router.get('/', (req, resp) => {
     },
   ]);
 });
-
 // endpoint categories
 router.get('/:categoryId/product/:productId', (req, resp) => {
   const { categoryId, productId } = req.params;
@@ -28,6 +31,11 @@ router.get('/:categoryId/product/:productId', (req, resp) => {
     categoryId,
     productId,
   });
+});
+// all categories
+router.get('/categoriesAll', async (req, resp) => {
+  const categories = await service.CategoryFindWithDB();
+  resp.status(200).json(categories);
 });
 
 module.exports = router;
