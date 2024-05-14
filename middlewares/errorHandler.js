@@ -1,3 +1,6 @@
+const sequelize = require('sequelize');
+const { ValidationError } = sequelize;
+
 // función que nos hará llegar a un middleware de tipo error:
 function logErrors(err, req, resp, next) {
   console.error(err); //mostrar el error en servidor para poder monitorearlo
@@ -21,6 +24,18 @@ function boomErrorHandler(err, req, resp, next) {
     next(err);
   }
 }
+
+function ormErrorHandler(err, req, resp, next) {
+  if (err instanceof ValidationError) {
+    resp.status(409).json({
+      statusCode: 409,
+      message: err.errors[0].message,
+      errros: err.errors[0],
+    });
+  }
+  next(err);
+}
+
 //así no se utilice next en el código se debe poner aqui,
 //ya que un middleware de error tiene los cuatro parámetros
-module.exports = { logErrors, errorHandler, boomErrorHandler };
+module.exports = { logErrors, errorHandler, boomErrorHandler, ormErrorHandler };
