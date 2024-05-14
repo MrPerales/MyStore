@@ -28,12 +28,12 @@ router.get('/', async (req, resp) => {
 });
 
 router.get(
-  '/:nickname',
+  '/:id',
   validatorHandler(getUserSchema, 'params'),
   async (req, resp, next) => {
     try {
-      const { nickname } = req.params;
-      const users = await service.findOne(nickname);
+      const { id } = req.params;
+      const users = await service.findOne(id);
       resp.json(users);
     } catch (error) {
       next(error);
@@ -53,14 +53,14 @@ router.post(
 );
 // patch
 router.patch(
-  '/:nickname',
+  '/:id',
   validatorHandler(getUserSchema, 'params'),
   validatorHandler(updateUserSchema, 'body'),
   async (req, resp, next) => {
     try {
       const body = req.body;
-      const { nickname } = req.params;
-      const user = await service.update(nickname, body);
+      const { id } = req.params;
+      const user = await service.update(id, body);
       resp.json(user);
     } catch (error) {
       next(error);
@@ -69,12 +69,12 @@ router.patch(
 );
 // delete
 router.delete(
-  '/:nickname',
+  '/:id',
   validatorHandler(deleteUserSchema, 'params'),
   async (req, resp, next) => {
     try {
-      const { nickname } = req.params;
-      const rta = await service.delete(nickname);
+      const { id } = req.params;
+      const rta = await service.delete(id);
       resp.json(rta);
     } catch (error) {
       next(error);
