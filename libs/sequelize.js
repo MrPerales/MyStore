@@ -13,6 +13,12 @@ const sequelize = new Sequelize(URI, {
   logging: true,
 });
 
+setupModels(sequelize);
+// una ves sincronizasdo va a crear las tablas que viene de setupModels
+sequelize.sync();
+
+module.exports = sequelize;
+
 /////////// para MYSQL/////////////
 // ERROR :(
 // code: 'ER_ACCESS_DENIED_ERROR',
@@ -32,9 +38,3 @@ const sequelize = new Sequelize(URI, {
 //   dialect: 'mysql',
 //   logging: true,
 // });
-
-setupModels(sequelize);
-// una ves sincronizasdo va a crear las tablas que viene de setupModels
-sequelize.sync();
-
-module.exports = sequelize;
