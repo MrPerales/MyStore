@@ -15,7 +15,9 @@ const sequelize = new Sequelize(URI, {
 
 setupModels(sequelize);
 // una ves sincronizasdo va a crear las tablas que viene de setupModels
-sequelize.sync();
+
+// sync() crea las tablas en la base de datos, no se usa en produccion
+//sequelize.sync();
 
 module.exports = sequelize;
 
