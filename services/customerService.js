@@ -17,7 +17,12 @@ class CustomerService {
     return customer;
   }
   async find() {
-    const customers = await sequelize.models.Customer.findAll();
+    const customers = await sequelize.models.Customer.findAll({
+      // para incluir los datos de la associates
+      // referecia de class Customer.associate (as: 'user')
+      // se pueden tener multiples associates
+      include: ['user'],
+    });
     return customers;
   }
 
