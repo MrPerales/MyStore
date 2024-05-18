@@ -5,7 +5,10 @@ class CustomerService {
   constructor() {}
 
   async create(data) {
-    const customer = await sequelize.models.Customer.create(data);
+    const customer = await sequelize.models.Customer.create(data, {
+      // para llenar los campos faltantes sin tener que usar otra logica
+      include: 'user',
+    });
     return customer;
   }
 
