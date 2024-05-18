@@ -25,7 +25,9 @@ class UsersService {
     return user;
   }
   async findWithDB() {
-    const response = await sequelize.models.User.findAll();
+    const response = await sequelize.models.User.findAll({
+      include: ['customer'],
+    });
     return response;
   }
   async update(id, changes) {

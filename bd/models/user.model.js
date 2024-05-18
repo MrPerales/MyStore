@@ -33,8 +33,15 @@ const UserSchema = {
 };
 class User extends Model {
   //gracias a MODEL ya tiene los metodos find findAll ....
-  static associate() {
+  static associate(models) {
     //associate
+    // para que quede associado de forma bidireccional
+    this.hasOne(models.Customer, {
+      // alias
+      as: 'customer',
+      //  referencia para encontrar
+      foreignKey: 'userId',
+    });
   }
 
   static config(sequelize) {
