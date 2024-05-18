@@ -33,6 +33,8 @@ const CustomerSchema = {
     allowNull: false,
     field: 'user_id',
     type: DataTypes.INTEGER,
+    // para evitar duplicados
+    unique: true,
     // a que tabla va referenciada
     references: {
       model: USER_TABLE,
