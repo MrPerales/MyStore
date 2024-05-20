@@ -60,7 +60,7 @@ router.post(
   async (req, resp, next) => {
     try {
       const body = req.body;
-      const newCategory = await service.update(body);
+      const newCategory = await service.create(body);
       resp.status(200).json(newCategory);
     } catch (error) {
       next(error);

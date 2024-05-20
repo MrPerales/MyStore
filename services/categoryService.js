@@ -4,6 +4,11 @@ const sequelize = require('../libs/sequelize');
 class CategoryService {
   constructor() {}
 
+  async create(data) {
+    const newCategory = await sequelize.models.Category.create(data);
+    return newCategory;
+  }
+
   async CategoryFindWithDB() {
     // tiene que ser el mismo ombre que tiene en modelName en la classs Category en este caso
     const response = await sequelize.models.Category.findAll();
