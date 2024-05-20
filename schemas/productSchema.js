@@ -8,14 +8,14 @@ const image = Joi.string().uri();
 const categoryId = Joi.number().integer();
 
 const createProductSchema = Joi.object({
-  name: name.required(),
+  productName: name.required(),
   price: price.required(),
   description: description.required(),
   image: image.required(),
   categoryId: categoryId.required(),
 });
 const updateProductSchema = Joi.object({
-  name: name,
+  productName: name,
   price: price,
   description: description,
   image: image,
