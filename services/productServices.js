@@ -5,72 +5,56 @@ const sequelize = require('../libs/sequelize');
 
 class ProductsService {
   constructor() {
-    this.products = [];
-    this.generate();
+    // this.products = [];
+    // this.generate();
   }
 
-  async generate() {
-    const limit = 10;
-    for (let i = 0; i < limit; i++) {
-      this.products.push({
-        id: faker.string.uuid(),
-        name: faker.commerce.productName(),
-        price: parseInt(faker.commerce.price(), 10),
-        image: faker.image.url(),
-        isBlock: faker.datatype.boolean(),
-      });
-    }
-  }
+  // async generate() {
+  //   const limit = 10;
+  //   for (let i = 0; i < limit; i++) {
+  //     this.products.push({
+  //       id: faker.string.uuid(),
+  //       name: faker.commerce.productName(),
+  //       price: parseInt(faker.commerce.price(), 10),
+  //       image: faker.image.url(),
+  //       isBlock: faker.datatype.boolean(),
+  //     });
+  //   }
+  // }
   async create(data) {
-    const newProduct = {
-      id: faker.string.uuid(),
-      ...data,
-    };
-    this.products.push(newProduct);
+    const newProduct = await sequelize.models.Product.create(data);
     return newProduct;
   }
   async find() {
-    const query = 'SELECT * FROM tasks';
-    const [data] = await sequelize.query(query);
-    return data;
+    const products = await sequelize.models.Product.findAll({
+      // incluye detalles de la categoria
+      include: ['category'],
+    });
+    return products;
   }
   async findOne(id) {
     //const name = this.getTotal(); //error creado
-    const product = this.products.find((item) => item.id === id);
+    const product = await sequelize.models.Product.findByPk(id);
     if (!product) {
       throw boom.notFound('product not found');
-    } else if (product.isBlock) {
-      throw boom.conflict('product is block ');
     }
     return product;
   }
 
   async update(id, changes) {
     // find product
-    const indexProduct = this.products.findIndex((item) => item.id === id);
-    if (indexProduct === -1) {
-      throw boom.notFound('product not Found');
-    }
-    const product = this.products[indexProduct];
+    const product = await this.findOne(id);
+    const updateProduct = await product.update(changes);
     // update product
-    this.products[indexProduct] = {
-      ...product,
-      ...changes,
-    };
-    return this.products[indexProduct];
+
+    return updateProduct;
   }
   async delete(id) {
     // find product
-    // const indexProduct = this.products.findIndex((item) => item.id === id);
-    // if (indexProduct === -1) {
-    //   throw boom.notFound('product not Found');
-    // }
+    const product = await this.findOne(id);
     // delete product
-    const query = `DELETE FROM tasks WHERE id = ${id}`;
-    await this.pool.query(query);
+    await product.destroy();
     return { id };
-    // this.products.splice(indexProduct, 1);
-    // return { id };
   }
 }
 

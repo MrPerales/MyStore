@@ -15,7 +15,10 @@ class CategoryService {
     return response;
   }
   async findOne(id) {
-    const category = await sequelize.models.Category.findByPk(id);
+    const category = await sequelize.models.Category.findByPk(id, {
+      // te regresa todos los porductos de cada categoria
+      include: ['products'],
+    });
     if (!category) {
       throw boom.notFound('Category not found');
     }
