@@ -13,7 +13,7 @@ const OrderSchema = {
   customerId: {
     field: 'customer_id',
     allowNull: false,
-    Type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER,
     references: {
       model: CUSTOMER_TABLE,
       key: 'id',
@@ -30,7 +30,12 @@ const OrderSchema = {
 };
 
 class Order extends Model {
-  static associate(models) {}
+  static associate(models) {
+    // una orden pertenesca a varios clientes
+    this.belongsTo(models.Customer, {
+      as: 'customer',
+    });
+  }
 
   static config(sequelize) {
     return {

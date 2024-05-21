@@ -52,6 +52,12 @@ class Customer extends Model {
   static associate(models) {
     //associate se ejecuta en el archivo indez de esta carpeta
     this.belongsTo(models.User, { as: 'user' });
+    // un cliente puede tener muchas ordenes de compra
+    this.hasMany(models.Order, {
+      as: 'order',
+      // foreignKey con la cual encontrar su valor
+      foreignKey: 'customerId',
+    });
   }
   static config(sequelize) {
     return {

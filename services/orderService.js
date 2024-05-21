@@ -15,7 +15,17 @@ class OrderService {
   }
 
   async findOne(id) {
-    const order = await sequelize.models.Order.findByPk(id);
+    const order = await sequelize.models.Order.findByPk(id, {
+      // devolvemos info del cliente
+      // include: ['customer'],
+      // devolvemos info del cliente y tambien la informacion de su usuario
+      include: [
+        {
+          association: 'customer',
+          include: ['user'],
+        },
+      ],
+    });
     if (!order) {
       throw boom.notFound('order not found ');
     }
