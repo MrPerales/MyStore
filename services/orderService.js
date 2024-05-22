@@ -24,6 +24,8 @@ class OrderService {
           association: 'customer',
           include: ['user'],
         },
+        // incluimos los items
+        'items',
       ],
     });
     if (!order) {
@@ -41,6 +43,12 @@ class OrderService {
     const order = await this.findOne(id);
     await order.destroy();
     return { id };
+  }
+
+  // para irdenes
+  async addItem(data) {
+    const newItem = await sequelize.models.OrderProduct.create(data);
+    return newItem;
   }
 }
 module.exports = OrderService;
