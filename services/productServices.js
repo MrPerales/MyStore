@@ -30,12 +30,18 @@ class ProductsService {
     const options = {
       // incluye detalles de la categoria
       include: ['category'],
+      // por defecto en vacio {}
+      where: {},
     };
-    const { limit, offset } = query;
+    const { limit, offset, price } = query;
     if (limit && offset) {
       // paginacion
       options.limit = limit;
       options.offset = offset;
+    }
+    if (price) {
+      // where  por cual atributo buscar
+      options.where.price = price;
     }
 
     const products = await sequelize.models.Product.findAll(options);
