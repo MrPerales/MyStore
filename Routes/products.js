@@ -7,16 +7,26 @@ const {
   updateProductSchema,
   getProductSchema,
   deleteProductSchema,
+  queryProductSchema,
 } = require('../schemas/productSchema');
 const router = express.Router();
 const service = new ProductsService();
 
 // endpoints GET
 // // products with faker-JS
-router.get('/', async (req, resp) => {
-  const products = await service.find();
-  resp.status(200).json(products);
-});
+router.get(
+  '/',
+  validatorHandler(queryProductSchema, 'query'),
+  async (req, resp, next) => {
+    try {
+      // mandamos todos los query
+      const products = await service.find(req.query);
+      resp.status(200).json(products);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
 router.get('/filter', (req, resp) => {
   resp.send('yo soy un filter');
