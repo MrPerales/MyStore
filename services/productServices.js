@@ -3,6 +3,9 @@ const boom = require('@hapi/boom');
 const pool = require('../libs/postgres.pool');
 const sequelize = require('../libs/sequelize');
 
+// operadores de SQL
+const { Op } = require('sequelize');
+
 class ProductsService {
   constructor() {
     // this.products = [];
@@ -33,15 +36,22 @@ class ProductsService {
       // por defecto en vacio {}
       where: {},
     };
-    const { limit, offset, price } = query;
+    const { limit, offset, price, price_min, price_max } = query;
+
+    // paginacion
     if (limit && offset) {
-      // paginacion
       options.limit = limit;
       options.offset = offset;
     }
     if (price) {
       // where  por cual atributo buscar
       options.where.price = price;
+    }
+    // filtro de precios max- min
+    if (price_max && price_min) {
+      options.where.price = {
+        [Op.between]: [price_min, price_max],
+      };
     }
 
     const products = await sequelize.models.Product.findAll(options);

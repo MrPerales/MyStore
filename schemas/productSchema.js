@@ -41,6 +41,14 @@ const queryProductSchema = Joi.object({
   limit: limit,
   offset: offset,
   price: price,
+  price_min,
+  // agregamos validacion a price_max siempre y cuando tengamos un price_min
+  price_max: price_max.when('price_min', {
+    // si existe un numero
+    is: price_min.required(),
+    //entonces price_max va a ser required
+    then: Joi.required(),
+  }),
 });
 
 module.exports = {
