@@ -27,6 +27,20 @@ const OrderSchema = {
     type: DataTypes.DATE,
     defaultValue: Sequelize.NOW,
   },
+  total: {
+    // con esto no va a aparecer en la base de Datos
+    type: DataTypes.VIRTUAL,
+    // funcion para saber como obtener el valor del campó
+    get() {
+      // items = es de la manera en la que llamaste tu asosiacion
+      if (this.items.length > 0) {
+        return this.items.reduce((total, item) => {
+          return total + item.price * item.OrderProduct.amount;
+        }, 0);
+      }
+      return 0;
+    },
+  },
 };
 
 class Order extends Model {
@@ -37,6 +51,7 @@ class Order extends Model {
     });
     //relacion cpn tabla ternaria,
     this.belongsToMany(models.Product, {
+      // nombre de asosicaion
       as: 'items',
       // a traves de que tabla se va a resolver la relacion (tabla ternaria)
       through: models.OrderProduct,
