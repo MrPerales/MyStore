@@ -35,6 +35,16 @@ class Order extends Model {
     this.belongsTo(models.Customer, {
       as: 'customer',
     });
+    //relacion cpn tabla ternaria,
+    this.belongsToMany(models.Product, {
+      as: 'items',
+      // a traves de que tabla se va a resolver la relacion (tabla ternaria)
+      through: models.OrderProduct,
+      // key de la tabla de la que estoy haciendo la relacion Order
+      foreignKey: 'orderId',
+      // la key de la otra tabla
+      otherKey: 'productId',
+    });
   }
 
   static config(sequelize) {
