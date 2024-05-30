@@ -1,6 +1,7 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 const sequelize = require('../libs/sequelize');
+const bcrypt = require('bcrypt');
 
 class UsersService {
   constructor() {
@@ -11,9 +12,17 @@ class UsersService {
   /////////////METODOS CON ORM DataBse///////////////////////
   //////////////////////////////////////////////////////////
   async create(data) {
+    // encriptando
+    const hash = await bcrypt.hash(data.password, 10);
     // create extiende de MODEL en la clase USER
-    const user = await sequelize.models.User.create(data);
-    console.log(user);
+    const user = await sequelize.models.User.create({
+      ...data,
+      password: hash,
+    });
+    // para no retornar el password
+    // delete es funcion de javaScript
+    // dataValues viene de sequealize puede cambiar si usas otro ORM
+    delete user.dataValues.password;
     return user;
   }
   async findOne(id) {
