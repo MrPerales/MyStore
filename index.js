@@ -27,6 +27,10 @@ const options = {
 // app.use(cors()); //habilitar a cualquiera origen de la peticion
 app.use(cors(options));
 
+// strategies require dinamico
+// como tiene nombre index no es necesario poner toda la ruta
+require('./utils/auth');
+
 routerApi(app);
 
 // middleware
