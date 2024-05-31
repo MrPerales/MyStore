@@ -39,6 +39,13 @@ class UsersService {
     });
     return response;
   }
+  async findByEmail(email) {
+    //este findOne es extension de sequelize
+    const response = await sequelize.models.User.findOne({
+      where: { email },
+    });
+    return response;
+  }
   async update(id, changes) {
     const user = await this.findOne(id);
     const response = await user.update(changes);
