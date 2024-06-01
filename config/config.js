@@ -17,5 +17,6 @@ const config = {
   mySqlPort: process.env.MYSQL_PORT,
   phpMyAdminPort: process.env.PHPMYADMIN_PORT,
   apikey: process.env.APIKEY,
+  secret: process.env.SECRETKEY,
 };
 module.exports = { config };
