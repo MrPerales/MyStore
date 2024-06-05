@@ -54,7 +54,7 @@ router.get(
     }
   },
 );
-// protegemos el endpoint con la estrategia jwt
+// protegemos los endpoints con la estrategia jwt
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
@@ -71,6 +71,7 @@ router.post(
 );
 router.patch(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(getCategorySchema, 'params'),
   validatorHandler(updateCategorySchema, 'body'),
   async (req, resp, next) => {
@@ -86,6 +87,7 @@ router.patch(
 );
 router.delete(
   '/id',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(deleteCategorySchema, 'params'),
   async (req, resp, next) => {
     try {
