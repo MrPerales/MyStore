@@ -9,6 +9,7 @@ const {
 const router = express.Router();
 const OrderService = require('./../services/orderService');
 const service = new OrderService();
+const passport = require('passport');
 
 // endpoitns
 
@@ -25,9 +26,11 @@ router.get(
     }
   },
 );
+// protegemos los endpoints con la estrategia jwt
 
 router.post(
   '/',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(createOrderSchema, 'body'),
   async (req, resp, next) => {
     try {
@@ -43,6 +46,7 @@ router.post(
 // para ordenes
 router.post(
   '/add-item',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(addItemSchema, 'body'),
   async (req, resp, next) => {
     try {

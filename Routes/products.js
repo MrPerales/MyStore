@@ -11,7 +11,7 @@ const {
 } = require('../schemas/productSchema');
 const router = express.Router();
 const service = new ProductsService();
-
+const passport = require('passport');
 // endpoints GET
 // // products with faker-JS
 router.get(
@@ -63,10 +63,12 @@ router.get('/:categoryId', (req, resp) => {
   ]);
 });
 
+// protegemos los endpoints con la estrategia jwt
 // POST
 
 router.post(
   '/',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(createProductSchema, 'body'),
   async (req, resp) => {
     const body = req.body;
@@ -79,6 +81,7 @@ router.post(
 
 router.patch(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(getProductSchema, 'params'),
   validatorHandler(updateProductSchema, 'body'),
   async (req, resp, next) => {
@@ -96,6 +99,7 @@ router.patch(
 // delete
 router.delete(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(deleteProductSchema, 'params'),
   async (req, resp, next) => {
     try {
