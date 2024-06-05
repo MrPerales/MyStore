@@ -11,6 +11,7 @@ const {
 const passport = require('passport');
 
 const service = new CategoryService();
+const { checkAdminRole } = require('../middlewares/authHandler');
 
 // router.get('/', (req, resp) => {
 //   resp.json([
@@ -55,9 +56,12 @@ router.get(
   },
 );
 // protegemos los endpoints con la estrategia jwt
+//nota el middleware checkRole se pone despues de passport
+// ya que en ese nos manda todos los datos para el checkRole
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
+  checkRoles('admin'),
   validatorHandler(createCategorySchema, 'body'),
   async (req, resp, next) => {
     try {
@@ -72,6 +76,7 @@ router.post(
 router.patch(
   '/:id',
   passport.authenticate('jwt', { session: false }),
+  checkRoles('admin'),
   validatorHandler(getCategorySchema, 'params'),
   validatorHandler(updateCategorySchema, 'body'),
   async (req, resp, next) => {
@@ -87,6 +92,7 @@ router.patch(
 );
 router.delete(
   '/id',
+  checkRoles('admin'),
   passport.authenticate('jwt', { session: false }),
   validatorHandler(deleteCategorySchema, 'params'),
   async (req, resp, next) => {
