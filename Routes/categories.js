@@ -8,6 +8,7 @@ const {
   createCategorySchema,
   deleteCategorySchema,
 } = require('../schemas/categorySchema');
+const passport = require('passport');
 
 const service = new CategoryService();
 
@@ -53,9 +54,10 @@ router.get(
     }
   },
 );
-
+// protegemos el endpoint con la estrategia jwt
 router.post(
   '/',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(createCategorySchema, 'body'),
   async (req, resp, next) => {
     try {
