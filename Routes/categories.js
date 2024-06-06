@@ -11,7 +11,7 @@ const {
 const passport = require('passport');
 
 const service = new CategoryService();
-const { checkAdminRole } = require('../middlewares/authHandler');
+const { checkRoles } = require('../middlewares/authHandler');
 
 // router.get('/', (req, resp) => {
 //   resp.json([
