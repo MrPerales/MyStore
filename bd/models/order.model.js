@@ -32,11 +32,15 @@ const OrderSchema = {
     type: DataTypes.VIRTUAL,
     // funcion para saber como obtener el valor del campó
     get() {
-      // items = es de la manera en la que llamaste tu asosiacion
-      if (this.items.length > 0) {
-        return this.items.reduce((total, item) => {
-          return total + item.price * item.OrderProduct.amount;
-        }, 0);
+      // validamos que tenga items , si no da error ya que no existe este campo
+      if (this.items) {
+        console.log('existen items en la orden');
+        // items = es de la manera en la que llamaste tu asosiacion
+        if (this.items.length > 0) {
+          return this.items.reduce((total, item) => {
+            return total + item.price * item.OrderProduct.amount;
+          }, 0);
+        }
       }
       return 0;
     },

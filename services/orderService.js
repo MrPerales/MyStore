@@ -50,5 +50,23 @@ class OrderService {
     const newItem = await sequelize.models.OrderProduct.create(data);
     return newItem;
   }
+  // buscar ordenes por usuario
+  async findByUser(userId) {
+    const orders = await sequelize.models.Order.findAll({
+      //Estás filtrando los pedidos para que solo incluyan aquellos cuyo cliente (customer) tiene un userId específico.
+      //Esto se logra utilizando la asociación $customer.user.id$.
+      where: {
+        '$customer.user.id$': userId,
+      },
+      // devolvemos info del cliente y tambien la informacion de su usuario
+      include: [
+        {
+          association: 'customer',
+          include: ['user'],
+        },
+      ],
+    });
+    return orders;
+  }
 }
 module.exports = OrderService;

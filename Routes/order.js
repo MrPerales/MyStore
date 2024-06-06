@@ -30,7 +30,7 @@ router.get(
 
 router.post(
   '/',
-  passport.authenticate('jwt', { session: false }),
+  // passport.authenticate('jwt', { session: false }),
   validatorHandler(createOrderSchema, 'body'),
   async (req, resp, next) => {
     try {
@@ -46,7 +46,7 @@ router.post(
 // para ordenes
 router.post(
   '/add-item',
-  passport.authenticate('jwt', { session: false }),
+  // passport.authenticate('jwt', { session: false }),
   validatorHandler(addItemSchema, 'body'),
   async (req, resp, next) => {
     try {

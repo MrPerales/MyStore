@@ -68,7 +68,7 @@ router.get('/:categoryId', (req, resp) => {
 
 router.post(
   '/',
-  passport.authenticate('jwt', { session: false }),
+  // passport.authenticate('jwt', { session: false }),
   validatorHandler(createProductSchema, 'body'),
   async (req, resp) => {
     const body = req.body;
