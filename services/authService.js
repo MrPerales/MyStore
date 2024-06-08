@@ -32,7 +32,7 @@ class AuthService {
     return { user, token };
   }
 
-  async recovery(email) {
+  async sendMail(email) {
     const user = await service.findByEmail(email);
     if (!user) {
       throw boom.unauthorized();
@@ -50,9 +50,13 @@ class AuthService {
 
     await transporter.sendMail({
       from: config.mail, // sender address
-      to: user.email, // list of receivers
-      subject: 'Hello ✔', // Subject line
-      text: 'Hello world?', // plain text body
+      // email de prueba
+      to: config.mail, // list of receivers
+      //habilitar para pruebas reales
+      //  to: user.email, // list of receivers
+
+      subject: 'Recovery Password ✔', // Subject line
+      text: 'Recovery', // plain text body
       html: '<b>Hello world?</b>', // html body
     });
 
