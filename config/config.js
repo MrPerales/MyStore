@@ -18,7 +18,7 @@ const config = {
   phpMyAdminPort: process.env.PHPMYADMIN_PORT,
   apikey: process.env.APIKEY,
   jwtSecret: process.env.JWT_SECRET,
-  passwordMail: process.env.PASSWORD,
-  mail: process.env.MAIL,
+  smtpPassword: process.env.SMTP_PASSWORD,
+  smtpEmail: process.env.SMTP_EMAIL,
 };
 module.exports = { config };

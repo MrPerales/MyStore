@@ -43,15 +43,15 @@ class AuthService {
       port: 587,
       secure: false, // Use `true` for port 465, `false` for all other ports
       auth: {
-        user: config.mail,
-        pass: config.passwordMail,
+        user: config.smtpEmail,
+        pass: config.smtpPassword,
       },
     });
 
     await transporter.sendMail({
-      from: config.mail, // sender address
+      from: config.smtpEmail, // sender address
       // email de prueba
-      to: config.mail, // list of receivers
+      to: config.smtpEmail, // list of receivers
       //habilitar para pruebas reales
       //  to: user.email, // list of receivers
 

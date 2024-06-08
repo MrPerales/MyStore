@@ -6,8 +6,8 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false, // Use `true` for port 465, `false` for all other ports
   auth: {
-    user: config.mail,
-    pass: config.passwordMail,
+    user: config.smtpEmail,
+    pass: config.smtpPassword,
   },
 });
 
@@ -15,8 +15,8 @@ const transporter = nodemailer.createTransport({
 async function sendMail() {
   // send mail with defined transport object
   const info = await transporter.sendMail({
-    from: config.mail, // sender address
-    to: config.mail, // list of receivers
+    from: config.smtpEmail, // sender address
+    to: config.smtpEmail, // list of receivers
     subject: 'Hello ✔', // Subject line
     text: 'Hello world?', // plain text body
     html: '<b>Hello world?</b>', // html body
