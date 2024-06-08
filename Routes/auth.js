@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-
+const validatorHandler = require('./../middlewares/validatorHandler');
 const jwt = require('jsonwebtoken');
 const { config } = require('./../config/config');
+const { loginAuthSchema } = require('../schemas/authSchema');
 
 router.post(
   '/login',
   passport.authenticate('local', { session: false }),
+  validatorHandler(loginAuthSchema, 'body'),
   async (req, resp, next) => {
     try {
       // passport nos manda los datos por el req
