@@ -32,7 +32,7 @@ router.post(
   async (req, resp, next) => {
     try {
       const { email } = req.body;
-      const sendMail = await service.sendMail(email);
+      const sendMail = await service.sendRecovery(email);
       resp.json(sendMail);
     } catch (error) {
       next(error);

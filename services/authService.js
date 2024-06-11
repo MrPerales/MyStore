@@ -32,11 +32,7 @@ class AuthService {
     return { user, token };
   }
 
-  async sendMail(email) {
-    const user = await service.findByEmail(email);
-    if (!user) {
-      throw boom.unauthorized();
-    }
+  async sendMail(infoMail) {
     // Estos emails son de prueba
     const transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',
@@ -48,19 +44,42 @@ class AuthService {
       },
     });
 
-    await transporter.sendMail({
+    await transporter.sendMail(infoMail);
+
+    return { message: 'email sent' };
+  }
+
+  async sendRecovery(email) {
+    const user = await service.findByEmail(email);
+    if (!user) {
+      throw boom.unauthorized();
+    }
+    // generamos el token para recovery
+    const payload = {
+      sub: user.id,
+    };
+    const token = jwt.sign(payload, config.jwtSecret);
+    // generamos el link para el frontend
+    const link = `https:// www.frontend.com/recovery?token=${token}`;
+    // agregamos el token a la DB
+    await service.update(user.id, { recoveyToken: token });
+    // creamos la estructura para el mail
+    const infoMail = {
       from: config.smtpEmail, // sender address
       // email de prueba
       to: config.smtpEmail, // list of receivers
       //habilitar para pruebas reales
       //  to: user.email, // list of receivers
 
-      subject: 'Recovery Password ✔', // Subject line
-      text: 'Recovery', // plain text body
-      html: '<b>Hello world?</b>', // html body
-    });
-
-    return { message: 'email sent' };
+      subject: 'ApiFakeStore: Recupera tu cuenta 🗝️', // Subject line
+      html: `
+        <b>Ingresa a este link 👇👇 para recuperar tu cuenta 🗝️</b>
+        <br>
+        <a href="${link}">Recuperar cuenta</a>
+      `, // html body
+    };
+    const resp = await this.sendMail(infoMail);
+    return resp;
   }
 }
 

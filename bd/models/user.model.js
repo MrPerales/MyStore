@@ -23,6 +23,11 @@ const UserSchema = {
     type: DataTypes.STRING,
     defaultValue: 'customer',
   },
+  recoveyToken: {
+    field: 'recovery_token',
+    allowNull: true,
+    type: DataTypes.STRING,
+  },
   createdAt: {
     //variable JS
     allowNull: false,
