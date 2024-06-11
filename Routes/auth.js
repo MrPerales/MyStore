@@ -5,6 +5,7 @@ const validatorHandler = require('./../middlewares/validatorHandler');
 const {
   loginAuthSchema,
   recoveryPasswordAuthSchema,
+  changePasswordSchema,
 } = require('../schemas/authSchema');
 
 const AuthService = require('../services/authService');
@@ -34,6 +35,20 @@ router.post(
       const { email } = req.body;
       const sendMail = await service.sendRecovery(email);
       resp.json(sendMail);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+router.post(
+  '/change-password',
+  validatorHandler(changePasswordSchema, 'body'),
+  async (req, resp, next) => {
+    try {
+      const { newPassword, token } = req.body;
+      const rta = await service.changePassword(newPassword, token);
+      resp.json(rta);
     } catch (error) {
       next(error);
     }

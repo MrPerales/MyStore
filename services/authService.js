@@ -58,7 +58,7 @@ class AuthService {
     const payload = {
       sub: user.id,
     };
-    const token = jwt.sign(payload, config.jwtSecret);
+    const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '10min' });
     // generamos el link para el frontend
     const link = `https:// www.frontend.com/recovery?token=${token}`;
     // agregamos el token a la DB
@@ -80,6 +80,32 @@ class AuthService {
     };
     const resp = await this.sendMail(infoMail);
     return resp;
+  }
+
+  async changePassword(newPassword, token) {
+    try {
+      // obtenemos el payload
+      const payload = jwt.verify(token, config.jwtSecret);
+      // obtenemos el id del usuario del payload
+      const id = payload.sub;
+      //buscamos en la DB al usuario
+      const user = await service.findOne(id);
+      // verificamos si el token coincide con el de la BD
+      // para que no reutilicen el token
+      if (user.recoveyToken !== token) {
+        throw boom.unauthorized();
+      }
+      // hacemos un hash a la nueva contraseña
+      const hash = await bcrypt.hash(newPassword, 10);
+      // actualizamos la BD
+      await service.update(user.id, {
+        recoveyToken: null, //borramos el token
+        password: hash,
+      });
+      return { message: 'password changed successfully' };
+    } catch (error) {
+      throw boom.unauthorized();
+    }
   }
 }
 
